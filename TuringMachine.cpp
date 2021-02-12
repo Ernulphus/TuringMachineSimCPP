@@ -18,6 +18,7 @@ int main(){
   std::string deltaFile = "binaryIncrement.txt";
 
   TuringMachine M (Q,S,G,F,q0,b,deltaFile);
+  M.check();
   M.run(true, "$10111");
 
 }
