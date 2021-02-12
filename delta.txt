@@ -1,0 +1,7 @@
+A $ A $ R
+A 0 A 0 R
+A 1 A 1 R
+A _ B _ L
+B $ C 1 R
+B 0 C 1 R
+B 1 B 0 L
