@@ -9,7 +9,7 @@ Every five space-delineated characters represents a value of d(q,x)->(p,y,D) whe
 All symbols and states have to be chars.  
 It's up to the user to make sure the transition function file is error-free, check() doesn't look at it!
 
-To Do:
-  [X] "Check" function that makes sure various parts of the function are valid
-    - b in G; q0 in Q; F subset Q; S subset G
-  [X] Minimal constructor (run() doesn't actually use most of the data in the TM!)
+To Do:  
+  - [x] "Check" function that makes sure various parts of the function are valid  
+    - b in G; q0 in Q; F subset Q; S subset G  
+  - [x] Minimal constructor (run() doesn't actually use most of the data in the TM!)
