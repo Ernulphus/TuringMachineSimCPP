@@ -13,7 +13,7 @@ private:
   char b;       // b, blank tape symbol; in G
   std::string deltaFile; // delta, name of filename to be parsed for transition function
 
-  char delta(std::string d,char q,char x, char out);
+  char delta(char q,char x, char out);
   // returns p,y, or L/R for a machine in state q reading x
 
 /*
@@ -27,11 +27,20 @@ public:
   // Constructor
   TuringMachine (std::set<char> Qi, std::set<char> Si, std::set<char> Gi, std::set<char> Fi,
     char q0i, char bi, std::string deltai);
+  // Minimal Constructor
+  TuringMachine (std::set<char> Fi, char q0i, char bi, std::string deltai);
+
   // Run the machine on an input string.
   // init - string that starts on the tape
   // step - controls whether to run it fast or step forward
   bool run(bool step, std::string init);
+
+  //
+  void check();
 };
+
+
+// Function implementations
 
 TuringMachine::TuringMachine (std::set<char> Qi, std::set<char> Si,
 std::set<char> Gi, std::set<char> Fi,char q0i, char bi, std::string deltai){
@@ -44,9 +53,17 @@ std::set<char> Gi, std::set<char> Fi,char q0i, char bi, std::string deltai){
   deltaFile = deltai;
 }
 
-char TuringMachine::delta(std::string d,char q,char x,char out){
+TuringMachine::TuringMachine (std::set<char> Fi, char q0i, char bi, std::string deltai){
+  F = Fi;
+  q0 = q0i;
+  b = bi;
+  deltaFile = deltai;
+}
+
+
+char TuringMachine::delta(char q,char x,char out){
   std::ifstream deltaIn;
-  deltaIn.open(d);
+  deltaIn.open(deltaFile);
   int mod = -1; // Counter to track what part of the function is read
   char hold; // Hold each char that's read in for comparison
   while (deltaIn >> hold)
@@ -90,9 +107,9 @@ bool TuringMachine::run(bool step, std::string init){
     // The contents of this loop represent one move of the TM
     if (cell >= tape.size()) tape += b; // Expand tape if needed
     // Read and get transition data
-    p = delta(deltaFile,q,tape[cell],'p');
-    y = delta(deltaFile,q,tape[cell],'y');
-    d = delta(deltaFile,q,tape[cell],'D');
+    p = delta(q,tape[cell],'p');
+    y = delta(q,tape[cell],'y');
+    d = delta(q,tape[cell],'D');
 
     // Move head and update tape
     // This string manipulation updates the instantaneous description of the TM for printing
@@ -113,4 +130,8 @@ bool TuringMachine::run(bool step, std::string init){
   }
 
   return true;
+}
+
+void TuringMachine::check(){
+
 }
