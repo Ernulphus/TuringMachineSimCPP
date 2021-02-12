@@ -6,6 +6,7 @@ Every five space-delineated characters represents a value of d(q,x)->(p,y,D) whe
   - p is the new state for the read/write head to transition to
   - y is the new symbol to write to the tape
   - D is the direction for the head to move - either 'L' or 'R'
+       
 All symbols and states have to be chars.  
 It's up to the user to make sure the transition function file is error-free, check() doesn't look at it!
 
