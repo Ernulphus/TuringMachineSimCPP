@@ -16,12 +16,10 @@ private:
   char delta(char q,char x, char out);
   // returns p,y, or L/R for a machine in state q reading x
 
-/*
-  // char delta_p(char d,char q,char x);  // returns new state for machine in state q reading tape x
-  // char delta_x(char d,char q,char x);  // returns y to write to tape in state q reading tape x
-  // char delta_D(char d, char q, char x);// returns direction for head to move
-*/
+  // Returns true if set s contains character c
   bool is_in(char c, std::set<char> s);
+  // Adds any character in set c but not in set s to set s
+  void add_to(std::set<char> c, std::set<char> &s);
 
 public:
   // Constructor
@@ -91,6 +89,14 @@ bool TuringMachine::is_in(char c, std::set<char> s){
   return s.find(c) != s.end();
 }
 
+void add_to(std::set<char> c, std::set<char> s){
+  for (itr = c.begin(); itr != c.end(); itr++)
+  {
+    if (!is_in(*itr,s))
+      s.insert(*itr);
+  }
+}
+
 bool TuringMachine::run(bool step, std::string init){
   std::string tape = q0 + init; // String to represent the tape
   char q = q0;  // State of the RW head
@@ -133,5 +139,14 @@ bool TuringMachine::run(bool step, std::string init){
 }
 
 void TuringMachine::check(){
-
+  // Ensure the blank symbol is in the tape alphabet
+  if (!is_in(b,G))
+    G.insert(b);
+  // Ensure the start state is in the set of states
+  if (!is_in(q0,Q)
+    Q.insert(q0);
+  // Ensure the set of accept states is a subset of the set of states
+  add_to(F,S);
+  // Ensure the input alphabet is a subset of the tape alphabet
+  add_to(S,G);
 }
