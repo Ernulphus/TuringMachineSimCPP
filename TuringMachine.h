@@ -89,8 +89,8 @@ bool TuringMachine::is_in(char c, std::set<char> s){
   return s.find(c) != s.end();
 }
 
-void add_to(std::set<char> c, std::set<char> s){
-  for (itr = c.begin(); itr != c.end(); itr++)
+void TuringMachine::add_to(std::set<char> c, std::set<char> &s){
+  for (std::set<char>::iterator itr = c.begin(); itr != c.end(); itr++)
   {
     if (!is_in(*itr,s))
       s.insert(*itr);
@@ -105,9 +105,9 @@ bool TuringMachine::run(bool step, std::string init){
   char y;       // Symbol to write
   char d;       // Direction to move
 
-  std::cout << "\033[2J\033[2;2H";
+  std::cout << "\033[2J\033[2;1H";
   std::cout << tape + '\n';
-  if (step) usleep(2500000);
+  if (step) usleep(1000000);
 
   while (!is_in(q,F)){
     // The contents of this loop represent one move of the TM
@@ -130,9 +130,9 @@ bool TuringMachine::run(bool step, std::string init){
 
     q = p; // Update state
 
-    std::cout << "\033[2J\033[2;2H";
+    //std::cout << "\033[2J\033[2;2H";
     std::cout << tape + '\n';
-    if (step) usleep(2500000);
+    if (step) usleep(1000000);
   }
 
   return true;
@@ -143,7 +143,7 @@ void TuringMachine::check(){
   if (!is_in(b,G))
     G.insert(b);
   // Ensure the start state is in the set of states
-  if (!is_in(q0,Q)
+  if (!is_in(q0,Q))
     Q.insert(q0);
   // Ensure the set of accept states is a subset of the set of states
   add_to(F,S);
