@@ -6,11 +6,16 @@ Every five space-delineated characters represents a value of d(q,x)->(p,y,D) whe
   - p is the new state for the read/write head to transition to
   - y is the new symbol to write to the tape
   - D is the direction for the head to move - either 'L' or 'R'
-       
+
 All symbols and states have to be chars.  
-It's up to the user to make sure the transition function file is error-free, check() doesn't look at it!
+It's up to the user to make sure the transition function file is error-free, check() doesn't look at it!  
+To halt and reject on a read, set p, y, and D to 'e' in the transition function. See palindrome.txt for examples.
 
 To Do:  
   - [x] "Check" function that makes sure various parts of the function are valid  
     - b in G; q0 in Q; F subset Q; S subset G  
   - [x] Minimal constructor (run() doesn't actually use most of the data in the TM!)
+  - [x] Reject states
+  - [] check() removes 'e' from Q, G, F
+  - [] More transition function examples!
+  - [] Put parts of TM definition into the delta file for easier machine construction?
