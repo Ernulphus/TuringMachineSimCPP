@@ -98,10 +98,9 @@ void TuringMachine::add_to(std::set<char> c, std::set<char> &s){
 }
 
 bool TuringMachine::run(bool step, std::string init){
-  std::string tape = q0 + init; // String to represent the tape
+  std::string tape = q0 + init; // String to represent the tape (instantaneous defiition)
   char q = q0;  // State of the RW head
   int cell = 1; // Cell looked at by writing head
-  char p;       // State to change to
   char y;       // Symbol to write
   char d;       // Direction to move
 
@@ -112,29 +111,34 @@ bool TuringMachine::run(bool step, std::string init){
   while (!is_in(q,F)){
     // The contents of this loop represent one move of the TM
     if (cell >= tape.size()) tape += b; // Expand tape if needed
-    // Read and get transition data
-    p = delta(q,tape[cell],'p');
+
+    // Read state, symbol, and direction from transition function
     y = delta(q,tape[cell],'y');
     d = delta(q,tape[cell],'D');
+    q = delta(q,tape[cell],'p');
+    if (q == 'e'){ // Check for a reject state
+      std::cout << "reject" << std::endl;
+      return false;
+    }
+    // Continue reading transition data
+
+
 
     // Move head and update tape
     // This string manipulation updates the instantaneous description of the TM for printing
     if (d == 'L' && cell > 0){ // Move left on an L unless we're at the start of the tape
-      tape = tape.substr(0,cell-2) + p + tape[cell-2] + y + tape.substr(cell+1);
+      tape = tape.substr(0,cell-2) + q + tape[cell-2] + y + tape.substr(cell+1);
       cell--;
     }
     else { // Move right
-      tape = tape.substr(0,cell-1) + y + p + tape.substr(cell+1);
+      tape = tape.substr(0,cell-1) + y + q + tape.substr(cell+1);
       cell++;
     }
 
-    q = p; // Update state
-
-    //std::cout << "\033[2J\033[2;2H";
     std::cout << tape + '\n';
     if (step) usleep(1000000);
   }
-
+  std::cout << "accept" << std::endl;
   return true;
 }
 
