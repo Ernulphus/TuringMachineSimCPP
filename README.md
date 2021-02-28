@@ -16,7 +16,7 @@ To Do:
     - b in G; q0 in Q; F subset Q; S subset G  
   - [x] Minimal constructor (run() doesn't actually use most of the data in the TM!)
   - [x] Reject states
-  - [] check() removes 'e' from Q, G, F
-  - [] More transition function examples!
-  - [] Put parts of TM definition into the delta file for easier machine construction
-  - [] Hash input file, then reference hash table for constant lookup while TM runs
+  - [ ] check() removes 'e' from Q, G, F
+  - [ ] More transition function examples!
+  - [ ] Put parts of TM definition into the delta file for easier machine construction
+  - [ ] Hash input file, then reference hash table for constant lookup while TM runs
