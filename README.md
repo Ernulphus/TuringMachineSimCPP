@@ -18,4 +18,5 @@ To Do:
   - [x] Reject states
   - [] check() removes 'e' from Q, G, F
   - [] More transition function examples!
-  - [] Put parts of TM definition into the delta file for easier machine construction?
+  - [] Put parts of TM definition into the delta file for easier machine construction
+  - [] Hash input file, then reference hash table for constant lookup while TM runs
