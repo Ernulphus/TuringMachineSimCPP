@@ -82,6 +82,7 @@ char TuringMachine::delta(char q,char x,char out){
       }
     }
   }
+  std::cout << q << x << out << '\n';
   return 'e';
 }
 
@@ -104,13 +105,18 @@ bool TuringMachine::run(bool step, std::string init){
   char y;       // Symbol to write
   char d;       // Direction to move
 
-  std::cout << "\033[2J\033[2;1H";
-  std::cout << tape + '\n';
+  //std::cout << "\033[2J\033[2;1H";
+  std::cout << tape << '\n';
   if (step) usleep(1000000);
 
   while (!is_in(q,F)){
     // The contents of this loop represent one move of the TM
-    if (cell >= tape.size()) tape += b; // Expand tape if needed
+    if (cell >= tape.size())
+      tape += b; // Expand tape right if needed
+    if (cell == 1){
+      tape = b + tape;
+      cell++; // Expanding left is really a sort of "shifting" in the string
+    }
 
     // Read state, symbol, and direction from transition function
     y = delta(q,tape[cell],'y');
@@ -153,4 +159,6 @@ void TuringMachine::check(){
   add_to(F,S);
   // Ensure the input alphabet is a subset of the tape alphabet
   add_to(S,G);
+
+  std::cout << deltaFile <<'\n';
 }
