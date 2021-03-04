@@ -19,6 +19,8 @@ To Do:
   - [x] Reject states
   - [x] Two-way infinite tape
   - [x] Comments starting with // are ignored
+  - [x] Internal sets unordered
+  - [x] Printed IDs have parentheses around the RW head for clarity
   - [ ] check() removes 'e' from Q, G, F
   - [ ] More transition function examples!
-  - [ ] Hash input file, then reference hash table for constant lookup while TM runs
+  - [ ] Instructions in an unordered set for faster lookup while running

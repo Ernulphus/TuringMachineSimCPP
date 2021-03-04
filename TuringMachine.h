@@ -68,7 +68,7 @@ TuringMachine::TuringMachine (std::string deltai, char bi, char fi){
   bool initialized = false;
   while (getline(deltaIn, hold))
   {
-    if (hold[0] != '/') // ignore comments
+    if (hold[0] != '/' && hold != "") // ignore comments
     {
       if (hold[0] == hold[8])
       {

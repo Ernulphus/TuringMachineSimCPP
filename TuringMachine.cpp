@@ -16,10 +16,10 @@ int main(){
   // // Blank symbol
   // char b = '_';
   // // Delta function infile
-  std::string deltaFile = "01*.txt";
+  std::string deltaFile = "0^n1^n0^n.txt";
 
   TuringMachine M (deltaFile,'B','f');
   //M.check();
-  M.run(true, "0111");
+  M.run(true, "010");
 
 }
