@@ -27,6 +27,8 @@ public:
     char q0i, char bi, std::string deltai);
   // Minimal Constructor
   TuringMachine (std::set<char> Fi, char q0i, char bi, std::string deltai);
+  //MinimalEST Constructor
+  TuringMachine (std::string deltai, char bi = '_', char fi = 'f');
 
   // Run the machine on an input string.
   // init - string that starts on the tape
@@ -58,6 +60,32 @@ TuringMachine::TuringMachine (std::set<char> Fi, char q0i, char bi, std::string 
   deltaFile = deltai;
 }
 
+// Most minimal constructor
+TuringMachine::TuringMachine (std::string deltai){
+  std::ifstream deltaIn;
+  deltaIn.open(deltai);
+  std::string hold;
+  bool initialized = false;
+  while (getline(deltaIn, hold))
+  {
+    if (hold[0] != '/') // ignore comments
+    {
+      if (hold[0] == hold[2])
+      {
+        F.insert(hold[0]); // add p to accept state if it's denoted as such
+      }
+      if (!initialized)
+      {
+        q0 = hold[0];
+        initialized = true; // start state is set
+      }
+    }
+  }
+  b = bi;
+  F.insert(fi);
+  deltaFile = deltai;
+}
+
 
 char TuringMachine::delta(char q,char x,char out){
   std::ifstream deltaIn;
@@ -66,18 +94,12 @@ char TuringMachine::delta(char q,char x,char out){
   std::string hold; // Hold each line that's read in for comparison
   while (getline(deltaIn, hold))
   {
-    // mod++;
     if (hold[0] == q)
     {
-      // deltaIn >> hold;
-      // mod++;
       if (hold[2] == x)
       { // On the right line of the function document
-        // deltaIn >> hold;
         if (out == 'p') return hold[4]; // New state return
-        // deltaIn >> hold;
         if (out == 'y') return hold[6]; // Write symbol return
-        // deltaIn >> hold;
         if (out == 'D') return hold[8]; // Direction return
       }
     }
@@ -155,7 +177,7 @@ void TuringMachine::check(){
   if (!is_in(q0,Q))
     Q.insert(q0);
   // Ensure the set of accept states is a subset of the set of states
-  add_to(F,S);
+  add_to(F,Q);
   // Ensure the input alphabet is a subset of the tape alphabet
   add_to(S,G);
 
