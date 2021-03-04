@@ -62,27 +62,26 @@ TuringMachine::TuringMachine (std::set<char> Fi, char q0i, char bi, std::string 
 char TuringMachine::delta(char q,char x,char out){
   std::ifstream deltaIn;
   deltaIn.open(deltaFile);
-  int mod = -1; // Counter to track what part of the function is read
-  char hold; // Hold each char that's read in for comparison
-  while (deltaIn >> hold)
+  // int mod = -1; // Counter to track what part of the function is read
+  std::string hold; // Hold each line that's read in for comparison
+  while (getline(deltaIn, hold))
   {
-    mod++;
-    if (mod%5 == 0 && hold == q)
+    // mod++;
+    if (hold[0] == q)
     {
-      deltaIn >> hold;
-      mod++;
-      if (hold == x)
+      // deltaIn >> hold;
+      // mod++;
+      if (hold[2] == x)
       { // On the right line of the function document
-        deltaIn >> hold;
-        if (out == 'p') return hold; // New state return
-        deltaIn >> hold;
-        if (out == 'y') return hold; // Write symbol return
-        deltaIn >> hold;
-        if (out == 'D') return hold; // Direction return
+        // deltaIn >> hold;
+        if (out == 'p') return hold[4]; // New state return
+        // deltaIn >> hold;
+        if (out == 'y') return hold[6]; // Write symbol return
+        // deltaIn >> hold;
+        if (out == 'D') return hold[8]; // Direction return
       }
     }
   }
-  std::cout << q << x << out << '\n';
   return 'e';
 }
 
@@ -105,7 +104,7 @@ bool TuringMachine::run(bool step, std::string init){
   char y;       // Symbol to write
   char d;       // Direction to move
 
-  //std::cout << "\033[2J\033[2;1H";
+  std::cout << "\033[2J\033[2;1H";
   std::cout << tape << '\n';
   if (step) usleep(1000000);
 

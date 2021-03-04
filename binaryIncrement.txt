@@ -1,8 +1,9 @@
+// Find end of string
 A $ A $ R
 A 0 A 0 R
 A 1 A 1 R
-A _ B _ L
+A _ B _ L // End of string found, start moving left
 B $ C 1 L
-B 0 C 1 L
-B 1 B 0 L
-B _ e e e
+B 0 C 1 L // add 1 to first 0 you find
+B 1 B 0 L // 'carry the 1'
+B _ e e e // reject empty strings

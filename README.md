@@ -16,6 +16,8 @@ To Do:
     - b in G; q0 in Q; F subset Q; S subset G  
   - [x] Minimal constructor (run() doesn't actually use most of the data in the TM!)
   - [x] Reject states
+  - [x] Two-way infinite tape
+  - [x] Ignore comments starting with //
   - [] check() removes 'e' from Q, G, F
   - [] More transition function examples!
   - [] Put parts of TM definition into the delta file for easier machine construction?
