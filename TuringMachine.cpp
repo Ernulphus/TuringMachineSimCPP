@@ -16,10 +16,10 @@ int main(){
   // // Blank symbol
   // char b = '_';
   // // Delta function infile
-  std::string deltaFile = "binaryIncrement.txt";
+  std::string deltaFile = "01*.txt";
 
-  TuringMachine M (deltaFile);
+  TuringMachine M (deltaFile,'B','f');
   //M.check();
-  M.run(true, "11010");
+  M.run(true, "0111");
 
 }

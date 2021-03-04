@@ -1,14 +1,14 @@
-#include <set>
+#include <unordered_set>
 #include <fstream>
 #include <iostream>
 #include <unistd.h>
 
 class TuringMachine{
 private:
-  std::set<char> Q;  // Set of states for the R/W head
-  std::set<char> S;  // Sigma, set of input symbols; subset of G
-  std::set<char> G;  // Gamma, set of tape symbols
-  std::set<char> F;  // F, set of accept states; subset of Q
+  std::unordered_set<char> Q;  // Set of states for the R/W head
+  std::unordered_set<char> S;  // Sigma, set of input symbols; subset of G
+  std::unordered_set<char> G;  // Gamma, set of tape symbols
+  std::unordered_set<char> F;  // F, set of accept states; subset of Q
   char q0;      // q_0, start state of the R/W head; in Q
   char b;       // b, blank tape symbol; in G
   std::string deltaFile; // delta, name of filename to be parsed for transition function
@@ -17,16 +17,16 @@ private:
   // returns p,y, or L/R for a machine in state q reading x
 
   // Returns true if set s contains character c
-  bool is_in(char c, std::set<char> s);
+  bool is_in(char c, std::unordered_set<char> s);
   // Adds any character in set c but not in set s to set s
-  void add_to(std::set<char> c, std::set<char> &s);
+  void add_to(std::unordered_set<char> c, std::unordered_set<char> &s);
 
 public:
   // Constructor
-  TuringMachine (std::set<char> Qi, std::set<char> Si, std::set<char> Gi, std::set<char> Fi,
+  TuringMachine (std::unordered_set<char> Qi, std::unordered_set<char> Si, std::unordered_set<char> Gi, std::unordered_set<char> Fi,
     char q0i, char bi, std::string deltai);
   // Minimal Constructor
-  TuringMachine (std::set<char> Fi, char q0i, char bi, std::string deltai);
+  TuringMachine (std::unordered_set<char> Fi, char q0i, char bi, std::string deltai);
   //MinimalEST Constructor
   TuringMachine (std::string deltai, char bi = '_', char fi = 'f');
 
@@ -42,8 +42,8 @@ public:
 
 // Function implementations
 
-TuringMachine::TuringMachine (std::set<char> Qi, std::set<char> Si,
-std::set<char> Gi, std::set<char> Fi,char q0i, char bi, std::string deltai){
+TuringMachine::TuringMachine (std::unordered_set<char> Qi, std::unordered_set<char> Si,
+std::unordered_set<char> Gi, std::unordered_set<char> Fi,char q0i, char bi, std::string deltai){
   Q = Qi;
   S = Si;
   G = Gi;
@@ -53,7 +53,7 @@ std::set<char> Gi, std::set<char> Fi,char q0i, char bi, std::string deltai){
   deltaFile = deltai;
 }
 
-TuringMachine::TuringMachine (std::set<char> Fi, char q0i, char bi, std::string deltai){
+TuringMachine::TuringMachine (std::unordered_set<char> Fi, char q0i, char bi, std::string deltai){
   F = Fi;
   q0 = q0i;
   b = bi;
@@ -61,7 +61,7 @@ TuringMachine::TuringMachine (std::set<char> Fi, char q0i, char bi, std::string 
 }
 
 // Most minimal constructor
-TuringMachine::TuringMachine (std::string deltai){
+TuringMachine::TuringMachine (std::string deltai, char bi, char fi){
   std::ifstream deltaIn;
   deltaIn.open(deltai);
   std::string hold;
@@ -107,12 +107,12 @@ char TuringMachine::delta(char q,char x,char out){
   return 'e';
 }
 
-bool TuringMachine::is_in(char c, std::set<char> s){
+bool TuringMachine::is_in(char c, std::unordered_set<char> s){
   return s.find(c) != s.end();
 }
 
-void TuringMachine::add_to(std::set<char> c, std::set<char> &s){
-  for (std::set<char>::iterator itr = c.begin(); itr != c.end(); itr++)
+void TuringMachine::add_to(std::unordered_set<char> c, std::unordered_set<char> &s){
+  for (std::unordered_set<char>::iterator itr = c.begin(); itr != c.end(); itr++)
   {
     if (!is_in(*itr,s))
       s.insert(*itr);
@@ -127,7 +127,7 @@ bool TuringMachine::run(bool step, std::string init){
   char d;       // Direction to move
 
   std::cout << "\033[2J\033[2;1H";
-  std::cout << tape << '\n';
+  std::cout << tape.substr(0,cell-1) << '(' << tape[cell-1] << ')' << tape.substr(cell) << '\n';
   if (step) usleep(1000000);
 
   while (!is_in(q,F)){
@@ -149,11 +149,9 @@ bool TuringMachine::run(bool step, std::string init){
     }
     // Continue reading transition data
 
-
-
     // Move head and update tape
     // This string manipulation updates the instantaneous description of the TM for printing
-    if (d == 'L' && cell > 0){ // Move left on an L unless we're at the start of the tape
+    if (d == 'L'){ // Move left on an L
       tape = tape.substr(0,cell-2) + q + tape[cell-2] + y + tape.substr(cell+1);
       cell--;
     }
@@ -162,7 +160,7 @@ bool TuringMachine::run(bool step, std::string init){
       cell++;
     }
 
-    std::cout << tape + '\n';
+    std::cout << tape.substr(0,cell-1) << '(' << tape[cell-1] << ')' << tape.substr(cell) << '\n';
     if (step) usleep(1000000);
   }
   std::cout << "accept" << std::endl;
