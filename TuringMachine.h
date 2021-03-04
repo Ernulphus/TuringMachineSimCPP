@@ -70,7 +70,7 @@ TuringMachine::TuringMachine (std::string deltai){
   {
     if (hold[0] != '/') // ignore comments
     {
-      if (hold[0] == hold[2])
+      if (hold[0] == hold[8])
       {
         F.insert(hold[0]); // add p to accept state if it's denoted as such
       }

@@ -15,9 +15,10 @@ To Do:
   - [x] "Check" function that makes sure various parts of the function are valid  
     - b in G; q0 in Q; F subset Q; S subset G  
   - [x] Minimal constructor (run() doesn't actually use most of the data in the TM!)
+  - [x] Minimaler constructor (automatic construction from delta file)
   - [x] Reject states
   - [x] Two-way infinite tape
-  - [x] Ignore comments starting with //
-  - [] check() removes 'e' from Q, G, F
-  - [] More transition function examples!
-  - [] Put parts of TM definition into the delta file for easier machine construction?
+  - [x] Comments starting with // are ignored
+  - [ ] check() removes 'e' from Q, G, F
+  - [ ] More transition function examples!
+  - [ ] Hash input file, then reference hash table for constant lookup while TM runs
