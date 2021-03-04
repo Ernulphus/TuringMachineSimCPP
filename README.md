@@ -15,12 +15,12 @@ To Do:
   - [x] "Check" function that makes sure various parts of the function are valid  
     - b in G; q0 in Q; F subset Q; S subset G  
   - [x] Minimal constructor (run() doesn't actually use most of the data in the TM!)
-  - [x] Minimaler constructor (automatic construction from delta file)
+  - [x] Minimal-er constructor (automatic construction from delta file)
   - [x] Reject states
   - [x] Two-way infinite tape
   - [x] Comments starting with // are ignored
   - [x] Internal sets unordered
   - [x] Printed IDs have parentheses around the RW head for clarity
-  - [ ] check() removes 'e' from Q, G, F
+  - [x] check() warns of 'e' from Q, G, F or 'L','R' in Q
+  - [x] Instructions in an unordered map for faster lookup while running
   - [ ] More transition function examples!
-  - [ ] Instructions in an unordered set for faster lookup while running

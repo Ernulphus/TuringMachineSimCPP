@@ -1,4 +1,5 @@
 #include <unordered_set>
+#include <unordered_map>
 #include <fstream>
 #include <iostream>
 #include <unistd.h>
@@ -12,6 +13,9 @@ private:
   char q0;      // q_0, start state of the R/W head; in Q
   char b;       // b, blank tape symbol; in G
   std::string deltaFile; // delta, name of filename to be parsed for transition function
+
+  // A map of "qx" -> "pyD"
+  std::unordered_map<std::string, std::string> deltaMap;
 
   char delta(char q,char x, char out);
   // returns p,y, or L/R for a machine in state q reading x
@@ -68,7 +72,7 @@ TuringMachine::TuringMachine (std::string deltai, char bi, char fi){
   bool initialized = false;
   while (getline(deltaIn, hold))
   {
-    if (hold[0] != '/' && hold != "") // ignore comments
+    if (hold[0] != '/' && hold != "") // ignore comments and blank lines
     {
       if (hold[0] == hold[8])
       {
@@ -79,6 +83,16 @@ TuringMachine::TuringMachine (std::string deltai, char bi, char fi){
         q0 = hold[0];
         initialized = true; // start state is set
       }
+
+      // Map the input to the output
+      std::string in = "", out = "";
+      in += hold[0];
+      in += hold[2];
+      out += hold[4];
+      out += hold[6];
+      out += hold[8];
+      deltaMap[in] = out;
+
     }
   }
   b = bi;
@@ -88,22 +102,34 @@ TuringMachine::TuringMachine (std::string deltai, char bi, char fi){
 
 
 char TuringMachine::delta(char q,char x,char out){
-  std::ifstream deltaIn;
-  deltaIn.open(deltaFile);
-  // int mod = -1; // Counter to track what part of the function is read
-  std::string hold; // Hold each line that's read in for comparison
-  while (getline(deltaIn, hold))
-  {
-    if (hold[0] == q)
-    {
-      if (hold[2] == x)
-      { // On the right line of the function document
-        if (out == 'p') return hold[4]; // New state return
-        if (out == 'y') return hold[6]; // Write symbol return
-        if (out == 'D') return hold[8]; // Direction return
-      }
-    }
-  }
+  // // O(n) on n instructions per step
+  // std::ifstream deltaIn;
+  // deltaIn.open(deltaFile);
+  // // int mod = -1; // Counter to track what part of the function is read
+  // std::string hold; // Hold each line that's read in for comparison
+  // while (getline(deltaIn, hold))
+  // {
+  //   if (hold[0] == q)
+  //   {
+  //     if (hold[2] == x)
+  //     { // On the right line of the function document
+  //       if (out == 'p') return hold[4]; // New state return
+  //       if (out == 'y') return hold[6]; // Write symbol return
+  //       if (out == 'D') return hold[8]; // Direction return
+  //     }
+  //   }
+  // }
+  // return 'e';
+
+  std::string qx = "";
+  qx += q;
+  qx += x;
+  if (deltaMap.find(qx) == deltaMap.end()) return 'e';
+  qx = deltaMap[qx];
+  if (out == 'p') return qx[0]; // New state return
+  if (out == 'y') return qx[1]; // Write symbol return
+  if (out == 'D') return qx[2]; // Direction return
+
   return 'e';
 }
 
@@ -179,5 +205,18 @@ void TuringMachine::check(){
   // Ensure the input alphabet is a subset of the tape alphabet
   add_to(S,G);
 
-  std::cout << deltaFile <<'\n';
+  if (is_in('e',Q) || is_in('e',G) || is_in('e',F))
+  {
+    std::cout << "Warning: exit symbol 'e' possibly misused";
+  }
+  if (is_in('L',Q) || is_in('R',Q))
+  {
+    std::cout << "Warning: direction symbol in Q, might misinterpret accept state";
+  }
+
+  // std::cout << deltaFile <<'\n';
+  // for (auto x : deltaMap)
+  // {
+  //   std::cout << x.first << " " << x.second << std::endl;
+  // }
 }

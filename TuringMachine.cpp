@@ -19,7 +19,7 @@ int main(){
   std::string deltaFile = "0^n1^n0^n.txt";
 
   TuringMachine M (deltaFile,'B','f');
-  //M.check();
-  M.run(true, "010");
+  M.check();
+  M.run(true, "001100");
 
 }
