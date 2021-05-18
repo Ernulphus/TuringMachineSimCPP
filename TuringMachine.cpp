@@ -16,10 +16,15 @@ int main(){
   // // Blank symbol
   // char b = '_';
   // // Delta function infile
-  std::string deltaFile = "0^n1^n0^n.txt";
+  // std::string deltaFile = "0^n1^n0^n.txt";
 
-  TuringMachine M (deltaFile,'B','f');
-  M.check();
-  M.run(true, "001100");
-
+  std::cout << "Input file name: ";
+  std::string inputfile;
+  std::cin >> inputfile;
+  TuringMachine M (inputfile,'B','f');
+  while (true){
+    std::cout << std::endl << "Input string: ";
+    std::cin >> inputfile;
+    M.run(false, inputfile);
+  }
 }

@@ -1,0 +1,5 @@
+// Busy beaver function with two states
+0 B 1 1 R
+0 1 1 1 L
+1 B 0 1 L
+1 1 f 1 R

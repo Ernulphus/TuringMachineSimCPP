@@ -1,4 +1,4 @@
-//this program should recognise strings in 0^n 1^n 0^n
+//this program should recognize strings in 0^n 1^n 0^n
 //that is, "count thrice"
 //B is "blank"
 //f is final (accepting) state

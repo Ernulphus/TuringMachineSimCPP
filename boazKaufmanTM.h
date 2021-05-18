@@ -41,6 +41,8 @@ public:
   // step - controls whether to run it fast or step forward
   bool run(bool step, std::string init);
 
+  bool exiting = false; // Used for exiting while running
+
   //
   void check();
 };
@@ -147,6 +149,25 @@ TuringMachine::TuringMachine (std::string deltai, char bi, char fi){
 
 
 std::string TuringMachine::delta(char q,char x){
+  // // O(n) on n instructions per step
+  // std::ifstream deltaIn;
+  // deltaIn.open(deltaFile);
+  // // int mod = -1; // Counter to track what part of the function is read
+  // std::string hold; // Hold each line that's read in for comparison
+  // while (getline(deltaIn, hold))
+  // {
+  //   if (hold[0] == q)
+  //   {
+  //     if (hold[2] == x)
+  //     { // On the right line of the function document
+  //       if (out == 'p') return hold[4]; // New state return
+  //       if (out == 'y') return hold[6]; // Write symbol return
+  //       if (out == 'D') return hold[8]; // Direction return
+  //     }
+  //   }
+  // }
+  // return 'e';
+
   std::string qx = "";
   qx += q;
   qx += x;
@@ -182,6 +203,11 @@ bool TuringMachine::run(bool step, std::string init){
 
   while (!is_in(q,F)){
 
+    if (exiting){
+      std::cout << "exited with user input" << std::endl;
+      break;
+    }
+
     // The contents of this loop represent one move of the TM
     if (cell >= tape.size())
       tape += b; // Expand tape right if needed
@@ -216,7 +242,8 @@ bool TuringMachine::run(bool step, std::string init){
     std::cout << tape.substr(0,cell-1) << '(' << tape[cell-1] << ')' << tape.substr(cell) << '\n';
     if (step) usleep(1000000);
   }
-  std::cout << "accept\n" << std::endl;
+  if (!exiting) std::cout << "accept\n" << std::endl;
+  std::cout << "To exit and input another string, hit any non-whitespace character and press enter" << std::endl;
   return true;
 }
 
