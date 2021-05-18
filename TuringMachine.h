@@ -84,6 +84,8 @@ TuringMachine::TuringMachine (std::string deltai, char bi, char fi){
         initialized = true; // start state is set
       }
 
+      Q.insert(hold[0]);
+
       // Map the input to the output
       std::string in = "", out = "";
       in += hold[0];
@@ -153,6 +155,7 @@ bool TuringMachine::run(bool step, std::string init){
   char d;       // Direction to move
 
   std::cout << "\033[2J\033[2;1H";
+  std::cout << deltaFile << std::endl << std::endl;
   std::cout << tape.substr(0,cell-1) << '(' << tape[cell-1] << ')' << tape.substr(cell) << '\n';
   if (step) usleep(1000000);
 
